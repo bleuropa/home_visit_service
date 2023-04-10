@@ -1,0 +1,36 @@
+<h1>Show Visit</h1>
+
+<%= if @live_action in [:edit] do %>
+  <.modal return_to={Routes.visit_show_path(@socket, :show, @visit)}>
+    <.live_component
+      module={HomeVisitServiceWeb.VisitLive.FormComponent}
+      id={@visit.id}
+      title={@page_title}
+      action={@live_action}
+      visit={@visit}
+      return_to={Routes.visit_show_path(@socket, :show, @visit)}
+    />
+  </.modal>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Date:</strong>
+    <%= @visit.date %>
+  </li>
+
+  <li>
+    <strong>Minutes:</strong>
+    <%= @visit.minutes %>
+  </li>
+
+  <li>
+    <strong>Tasks:</strong>
+    <%= @visit.tasks %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.visit_show_path(@socket, :edit, @visit), class: "button" %></span> |
+<span><%= live_redirect "Back", to: Routes.visit_index_path(@socket, :index) %></span>
