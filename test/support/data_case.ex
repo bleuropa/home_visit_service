@@ -23,6 +23,7 @@ defmodule HomeVisitService.DataCase do
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
+      import HomeVisitService.Factory
       import HomeVisitService.DataCase
     end
   end

@@ -8,15 +8,15 @@ defmodule HomeVisitService.AccountsTest do
 
   describe "User registration" do
     test "successful registration for a member" do
-      user_params = (:user, role: "member")
-      {:ok, user} = Accounts.register_user(attrs)
+      user_params = params_for(:user, role: "member")
+      {:ok, user} = Accounts.register_user(user_params)
 
-      assert user.email == attrs.email
+      assert user.email == user_params.email
       assert user.role == "member"
     end
 
     test "successful registration for a pal" do
-      attrs = Factory.(:user, role: "pal")
+      attrs = params_for(:user, role: "pal")
       {:ok, user} = Accounts.register_user(attrs)
 
       assert user.email == attrs.email

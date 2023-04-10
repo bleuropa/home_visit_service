@@ -7,7 +7,7 @@ defmodule HomeVisitService.MixProject do
       version: "0.1.0",
       elixir: "~> 1.12",
       elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: [:gettext] ++ Mix.compilers(),
+      compilers: Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps()
@@ -20,7 +20,7 @@ defmodule HomeVisitService.MixProject do
   def application do
     [
       mod: {HomeVisitService.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:ex_machina, :logger, :runtime_tools]
     ]
   end
 
