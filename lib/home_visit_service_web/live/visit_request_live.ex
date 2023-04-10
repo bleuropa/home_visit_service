@@ -16,8 +16,6 @@ defmodule HomeVisitServiceWeb.VisitRequestLive do
   end
 
   def handle_event("add-task", _, socket) do
-    IO.inspect(socket.assigns.visit_request_changeset, lablel: "changeset")
-
     existing_tasks =
       Map.get(socket.assigns.visit_request_changeset.changes, :tasks, socket.assigns.visit.tasks)
 
@@ -50,15 +48,11 @@ defmodule HomeVisitServiceWeb.VisitRequestLive do
 
   @impl true
   def handle_event("request_visit", %{"visit" => visit_params}, socket) do
-    IO.inspect(visit_params, label: "visit_params")
-
     case Visits.create_visit_request(socket.assigns.user.id, visit_params) do
       {:ok, visit} ->
-        IO.inspect(visit, lable: "visit created")
         {:noreply, assign(socket, :visit_request_changeset, Visits.change_visit(%Visit{}, %{}))}
 
       {:error, changeset} ->
-        IO.inspect(changeset, label: "changeset")
         {:noreply, assign(socket, :visit_request_changeset, changeset)}
     end
   end

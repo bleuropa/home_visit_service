@@ -83,14 +83,6 @@ defmodule HomeVisitServiceWeb.Router do
     get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
 
     live_session :current_user, on_mount: [{HomeVisitServiceWeb.LiveAuth, :ensure_authenticated}] do
-      live "/visits", VisitLive.Index, :index
-      live "/visits/new", VisitLive.Index, :new
-      live "/visits/:id/edit", VisitLive.Index, :edit
-
-      live "/visits/:id", VisitLive.Show, :show
-      live "/visits/:id/show/edit", VisitLive.Show, :edit
-
-      live "/user-dash", DashboardLive
       live "/visit-request", VisitRequestLive
       live "/available-visits", AvailableVisitsLive
     end
