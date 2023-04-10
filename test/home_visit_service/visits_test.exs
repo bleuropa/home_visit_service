@@ -55,6 +55,21 @@ defmodule HomeVisitService.VisitsTest do
       assert updated_member.minutes == 50
       assert updated_pal.minutes == 42.5
     end
+
+    test "Only pending visits are fetched for pals" do
+      # Create visits with different statuses
+      insert(:visit, status: "pending")
+      insert(:visit, status: "fulfilled")
+      insert(:visit, status: "pending")
+      insert(:visit, status: "cancelled")
+
+      # Fetch visits for pals
+      fetched_visits = Visits.list_available_visits()
+
+      # Assert that only pending visits are fetched
+      assert Enum.all?(fetched_visits, fn visit -> visit.status == "pending" end)
+    end
+
   end
 
 end
