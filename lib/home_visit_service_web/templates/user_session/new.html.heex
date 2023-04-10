@@ -22,7 +22,7 @@
           <label for="remember-me" class="ml-2 block text-sm text-gray-900">Remember me</label>
         </div>
 
-        <div class="text-sm">
+        <div class="text-sm pt-5 pb-10">
           <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">Forgot your password?</a>
         </div>
       </div>
@@ -41,7 +41,7 @@
   </div>
 </div>
 
-<p>
+<div class="text-center mx-auto w-full">
   <%= link "Register", to: Routes.user_registration_path(@conn, :new) %> |
   <%= link "Forgot your password?", to: Routes.user_reset_password_path(@conn, :new) %>
-</p>
+</div>
