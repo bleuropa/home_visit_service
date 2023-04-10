@@ -10,6 +10,11 @@ defmodule HomeVisitServiceWeb.UserRegistrationController do
     render(conn, "new.html", changeset: changeset, role: role)
   end
 
+  def new(conn, _params) do
+    changeset = Accounts.change_user_registration(%User{}, %{})
+    render(conn, "new.html", changeset: changeset, role: "member")
+  end
+
   def create(conn, %{"user" => user_params}) do
     case Accounts.register_user(user_params) do
       {:ok, user} ->

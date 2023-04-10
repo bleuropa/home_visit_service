@@ -1,9 +1,8 @@
 defmodule HomeVisitServiceWeb.VisitRequestLive do
   use HomeVisitServiceWeb, :live_view
 
-  alias HomeVisitService.Visits
+  alias HomeVisitService.{Accounts, Tasks, Visits}
   alias HomeVisitService.Visits.Visit
-  alias HomeVisitService.Tasks
   alias HomeVisitService.Tasks.Task
 
   @impl true
@@ -18,7 +17,9 @@ defmodule HomeVisitServiceWeb.VisitRequestLive do
 
   def handle_event("add-task", _, socket) do
     IO.inspect(socket.assigns.visit_request_changeset, lablel: "changeset")
-    existing_tasks = Map.get(socket.assigns.visit_request_changeset.changes, :tasks, socket.assigns.visit.tasks)
+
+    existing_tasks =
+      Map.get(socket.assigns.visit_request_changeset.changes, :tasks, socket.assigns.visit.tasks)
 
     tasks =
       existing_tasks
@@ -32,6 +33,7 @@ defmodule HomeVisitServiceWeb.VisitRequestLive do
 
     {:noreply, assign(socket, :visit_request_changeset, visit_request_changeset)}
   end
+
   def handle_event("remove-task", %{"remove" => remove_id}, socket) do
     tasks =
       socket.assigns.visit_request_changeset.changes.tasks
@@ -46,10 +48,10 @@ defmodule HomeVisitServiceWeb.VisitRequestLive do
     {:noreply, assign(socket, visit_request_changeset: visit_request_changeset)}
   end
 
-
   @impl true
   def handle_event("request_visit", %{"visit" => visit_params}, socket) do
     IO.inspect(visit_params, label: "visit_params")
+
     case Visits.create_visit_request(socket.assigns.user.id, visit_params) do
       {:ok, visit} ->
         IO.inspect(visit, lable: "visit created")
@@ -66,15 +68,22 @@ defmodule HomeVisitServiceWeb.VisitRequestLive do
     {:noreply, assign(socket, :visit_request_changeset, changeset)}
   end
 
-  defp get_temp_id, do: :crypto.strong_rand_bytes(5) |> Base.url_encode64 |> binary_part(0, 5)
+  def handle_event("add-minutes", _, socket) do
+    Accounts.add_minutes(socket.assigns.user.id, 300)
+    user = Accounts.get_user!(socket.assigns.user.id)
+    {:noreply, assign(socket, :minutes, user.minutes)}
+  end
+
+  defp get_temp_id, do: :crypto.strong_rand_bytes(5) |> Base.url_encode64() |> binary_part(0, 5)
 
   @impl true
   def render(assigns) do
     ~H"""
-    <div class="mx-auto h-screen bg-gray-900 text-white">
-  <h1 class="text-3xl font-semibold mb-4">Request a Visit</h1>
+    <div class="p-10 h-screen bg-gray-900 text-white">
+    <div class="container mx-auto max-w-xl">
+    <h1 class="text-3xl font-semibold mb-4">Request a Visit</h1>
 
-  <.form let={f} for={@visit_request_changeset}, phx-change={"validate"} phx_submit= "request_visit">
+    <.form let={f} for={@visit_request_changeset}, phx-change={"validate"} phx_submit= "request_visit">
     <div class="mb-4">
       <%= label f, :date, "Date:", class: "block text-sm font-medium" %>
       <%= date_input f, :date, class: "block bg-gray-900 w-full mt-1 border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" %>
@@ -119,14 +128,16 @@ defmodule HomeVisitServiceWeb.VisitRequestLive do
     <a href="#" phx-click="add-task">Add a task</a>
       <%= submit "Request Visit", class: "w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
     </div>
-  </.form>
+    </.form>
 
-  <div class="mt-12">
+    <div class="mt-12">
     <h2 class="text-2xl font-semibold mb-4">Manage Your Minutes</h2>
     <p class="text-lg mb-4">Current available minutes: <%= @minutes %></p>
+    <button phx-click="add-minutes" class="w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Buy more minutes</button>
     <!-- You can add functionality to add more minutes here -->
-  </div>
-  </div>
+    </div>
+    </div>
+    </div>
     """
   end
 end

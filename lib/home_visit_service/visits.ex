@@ -40,6 +40,7 @@ defmodule HomeVisitService.Visits do
   def get_visit!(id) do
     Repo.get!(Visit, id) |> Repo.preload(tasks: from(t in Task, order_by: t.id))
   end
+
   @doc """
   Updates a visit.
 
@@ -92,6 +93,7 @@ defmodule HomeVisitService.Visits do
     |> Repo.all()
     |> Repo.preload([:member, :tasks])
   end
+
   def list_member_visits(member_id) do
     from(v in Visit, where: v.member_id == ^member_id, limit: 10)
     |> Repo.all()
@@ -142,8 +144,14 @@ defmodule HomeVisitService.Visits do
 
       multi =
         Ecto.Multi.new()
-        |> Ecto.Multi.update(:update_member_minutes, update_user_minutes_changeset(member, member_new_minutes))
-        |> Ecto.Multi.update(:update_pal_minutes, update_user_minutes_changeset(pal, pal_new_minutes))
+        |> Ecto.Multi.update(
+          :update_member_minutes,
+          update_user_minutes_changeset(member, member_new_minutes)
+        )
+        |> Ecto.Multi.update(
+          :update_pal_minutes,
+          update_user_minutes_changeset(pal, pal_new_minutes)
+        )
         |> Ecto.Multi.update(:fulfill_visit, Visit.changeset(visit, %{status: "fulfilled"}))
         |> Ecto.Multi.update(:claim_visit, Visit.claim_changeset(visit, %{pal_id: pal_id}))
 
@@ -151,11 +159,12 @@ defmodule HomeVisitService.Visits do
         {:ok, resp} ->
           IO.inspect(resp, label: "resp")
           {:ok, "Visit fulfilled and claimed"}
-        {:error, failed_operation, failed_value, changes_so_far} ->
-           IO.inspect(failed_operation, label: "failed_operation")
-           IO.inspect(failed_value, label: "failed_value")
 
-           {:error, "Failed to update user minutes or visit status"}
+        {:error, failed_operation, failed_value, changes_so_far} ->
+          IO.inspect(failed_operation, label: "failed_operation")
+          IO.inspect(failed_value, label: "failed_value")
+
+          {:error, "Failed to update user minutes or visit status"}
       end
     else
       {:error, "Invalid visit status or insufficient member minutes"}

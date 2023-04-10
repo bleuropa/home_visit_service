@@ -24,7 +24,6 @@ defmodule HomeVisitServiceWeb.Router do
     live_session :maybe_user, on_mount: [{HomeVisitServiceWeb.LiveAuth, :maybe_user}] do
       live "/", HomePageLive
     end
-
   end
 
   # Other scopes may use custom stacks.
@@ -79,9 +78,9 @@ defmodule HomeVisitServiceWeb.Router do
   scope "/", HomeVisitServiceWeb do
     pipe_through [:browser, :require_authenticated_user]
 
-      get "/users/settings", UserSettingsController, :edit
-      put "/users/settings", UserSettingsController, :update
-      get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
+    get "/users/settings", UserSettingsController, :edit
+    put "/users/settings", UserSettingsController, :update
+    get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
 
     live_session :current_user, on_mount: [{HomeVisitServiceWeb.LiveAuth, :ensure_authenticated}] do
       live "/visits", VisitLive.Index, :index

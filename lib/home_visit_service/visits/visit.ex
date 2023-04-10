@@ -22,6 +22,7 @@ defmodule HomeVisitService.Visits.Visit do
     |> validate_required([:date, :minutes])
     |> cast_assoc(:tasks, with: &Task.changeset/2)
   end
+
   def claim_changeset(visit, attrs) do
     visit
     |> cast(attrs, [:pal_id])

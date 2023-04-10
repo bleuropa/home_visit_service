@@ -4,9 +4,21 @@ defmodule HomeVisitServiceWeb.VisitLiveTest do
   import Phoenix.LiveViewTest
   import HomeVisitService.VisitsFixtures
 
-  @create_attrs %{date: %{day: 7, hour: 1, minute: 43, month: 4, year: 2023}, minutes: 42, tasks: "some tasks"}
-  @update_attrs %{date: %{day: 8, hour: 1, minute: 43, month: 4, year: 2023}, minutes: 43, tasks: "some updated tasks"}
-  @invalid_attrs %{date: %{day: 30, hour: 1, minute: 43, month: 2, year: 2023}, minutes: nil, tasks: nil}
+  @create_attrs %{
+    date: %{day: 7, hour: 1, minute: 43, month: 4, year: 2023},
+    minutes: 42,
+    tasks: "some tasks"
+  }
+  @update_attrs %{
+    date: %{day: 8, hour: 1, minute: 43, month: 4, year: 2023},
+    minutes: 43,
+    tasks: "some updated tasks"
+  }
+  @invalid_attrs %{
+    date: %{day: 30, hour: 1, minute: 43, month: 2, year: 2023},
+    minutes: nil,
+    tasks: nil
+  }
 
   defp create_visit(_) do
     visit = visit_fixture()

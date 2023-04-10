@@ -11,7 +11,11 @@ defmodule HomeVisitServiceWeb.AvailableVisitsLive do
   @impl true
   def handle_event("fulfill", %{"id" => visit_id}, socket) do
     IO.inspect(visit_id, label: "visit_id")
-    Visits.fulfill_visit(visit_id, socket.assigns.current_user.id)
+    visit = Visits.get_visit!(visit_id)
+    if visit.minutes < socket.assigns.current_user.minutes do
+      Visits.fulfill_visit(visit_id, socket.assigns.current_user.id)
+    end
+
     {:noreply, assign(socket, :visits, fetch_available_visits())}
   end
 

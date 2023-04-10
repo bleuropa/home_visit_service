@@ -15,12 +15,15 @@ defmodule HomeVisitService.Tasks.Task do
 
   def changeset(task, attrs) do
     task
-    |> Map.put(:temp_id, (task.temp_id || attrs["temp_id"])) # So its persisted
+    # So its persisted
+    |> Map.put(:temp_id, task.temp_id || attrs["temp_id"])
     |> cast(attrs, [:title, :description, :delete])
     |> validate_required([:title, :description])
     |> maybe_mark_for_deletion()
   end
+
   defp maybe_mark_for_deletion(%{data: %{id: nil}} = changeset), do: changeset
+
   defp maybe_mark_for_deletion(changeset) do
     if get_change(changeset, :delete) do
       %{changeset | action: :delete}

@@ -6,7 +6,8 @@ defmodule HomeVisitService.Tasks do
   def list_tasks(user_id) do
     Repo.all(
       from t in Task,
-      where: t.user_id == ^user_id)
+        where: t.user_id == ^user_id
+    )
   end
 
   def get_task!(id), do: Repo.get!(Task, id)

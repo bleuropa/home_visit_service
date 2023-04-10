@@ -1,6 +1,7 @@
 defmodule HomeVisitServiceWeb.LiveAuth do
   import Phoenix.LiveView
   alias HomeVisitService.Accounts
+
   def on_mount(:ensure_authenticated, _params, session, socket) do
     socket = mount_current_user(session, socket)
 
@@ -23,11 +24,12 @@ defmodule HomeVisitServiceWeb.LiveAuth do
       else
         socket
       end
+
     {:cont, socket}
   end
 
   defp mount_current_user(session, socket) do
-     user = Accounts.get_user_by_session_token(session["user_token"])
-     assign(socket, :current_user, user)
+    user = Accounts.get_user_by_session_token(session["user_token"])
+    assign(socket, :current_user, user)
   end
 end

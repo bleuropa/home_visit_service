@@ -19,22 +19,24 @@ defmodule HomeVisitServiceWeb.HomePageLive do
     ~H"""
     <section class="bg-white dark:bg-gray-900 h-screen">
      <%= if @user do %>
-     <div class="absolute top-3 right-6 text-white text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Log out</div>
+     <%= link "logout", to: "users/log_out", method: :delete, class: "absolute top-3 right-6 text-white text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" %>
      <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16">
         <div class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-8 md:p-12 mb-8">
           <h1 class="text-gray-900 dark:text-white text-3xl md:text-5xl font-extrabold mb-2">Total Minutes: <%= @minutes %></h1>
           <%= if @user.role == "member" do %>
-          <p class="text-lg font-normal text-gray-500 dark:text-gray-400 mb-6">Go to your dash to add more minutes if you are a member</p>
+          <p class="text-lg font-normal text-gray-500 dark:text-gray-400 mb-6">You have minutes! Could you use another visit?</p>
+          <a href="visit-request" class="text-white text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Make a visit request</a>
           <% else %>
           <div class="text-white">
             <p>To gain more minutes, try accepting more visits</p>
-            <a href="available-visits">View Visits</a>
+            <a href="available-visits" class="text-white text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">View Visits</a>
           </div>
           <% end %>
         </div>
       </div>
     <% else %>
-    <a class="absolute top-3 right-6 text-white text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 " href={Routes.user_session_path(@socket, :new)}>Login</a>
+    <%= link "login", to: "/users/log_in", class: "absolute top-3 right-6 text-white text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" %>
+    <%!-- <a class="absolute top-3 right-6 text-white text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 " href={Routes.user_session_path(@socket, :new)}>Login</a> --%>
       <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16">
         <div class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-8 md:p-12 mb-8">
           <h1 class="text-gray-900 dark:text-white text-3xl md:text-5xl font-extrabold mb-2">Welcome to the Home Visit Service</h1>

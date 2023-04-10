@@ -146,6 +146,16 @@ defmodule HomeVisitService.Accounts do
     end
   end
 
+  def add_minutes(user_id, additional_minutes) do
+    user = Repo.get!(User, user_id)
+
+    updated_minutes = user.minutes + additional_minutes
+
+    changeset = Ecto.Changeset.change(user, %{minutes: updated_minutes})
+
+    Repo.update(changeset)
+  end
+
   defp user_email_multi(user, email, context) do
     changeset =
       user

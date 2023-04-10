@@ -17,14 +17,16 @@ config :home_visit_service, HomeVisitServiceWeb.Endpoint,
   pubsub_server: HomeVisitService.PubSub,
   live_view: [signing_salt: "PA/Y7rwr"]
 
-config :tailwind, version: "3.3.1", default: [
-  args: ~w(
+config :tailwind,
+  version: "3.3.1",
+  default: [
+    args: ~w(
     --config=tailwind.config.js
     --input=css/app.css
     --output=../priv/static/assets/app.css
   ),
-  cd: Path.expand("../assets", __DIR__)]
-
+    cd: Path.expand("../assets", __DIR__)
+  ]
 
 # Configures the mailer
 #
